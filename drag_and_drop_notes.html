@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<style>
+    .note {
+        position: absolute;
+        z-index: 9;
+        background-color: #f1f1f1;
+        text-align: center;
+        border: 1px solid #d3d3d3;
+    }
+    .title-bar {
+        padding: 10px;
+        cursor: move;
+        z-index: 10;
+        background-color: #2196F3;
+        color: #fff;
+    }
+</style>
+<body>
+<h1>Draggable Elements</h1>
+<p>Click and hold the mouse button down while moving the element</p>
+
+<div class="note">
+    <div class="title-bar">Drag From Here.</div>
+    <p>Content</p>
+</div>
+
+<div class="note">
+    <div class="title-bar">Drag From Here.</div>
+    <p>Content</p>
+</div>
+
+<script>
+    //Apply makeDraggable to all elements with class note.
+    [...document.getElementsByClassName("note")].map(makeDraggable);
+
+    function makeDraggable(element) {
+        let newX = 0, newY = 0, lastX = 0, lastY = 0;
+        element.onmousedown = startDrag;
+
+        function startDrag(e) {
+            e.preventDefault();
+            lastX = e.clientX;
+            lastY = e.clientY;
+            document.onmouseup = endDrag;
+            document.onmousemove = midDrag;
+        }
+
+        function midDrag(e) {
+            e.preventDefault();
+            newX = lastX - e.clientX;
+            newY = lastY - e.clientY;
+            lastX = e.clientX;
+            lastY = e.clientY;
+            element.style.top = (element.offsetTop - newY) + "px";
+            element.style.left = (element.offsetLeft - newX) + "px";
+        }
+
+        function endDrag() {
+            document.onmouseup = null;
+            document.onmousemove = null;
+        }
+    }
+</script>
+</body>
+</html>
